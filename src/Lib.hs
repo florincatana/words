@@ -1,17 +1,19 @@
 module Lib
-    ( grid
+    ( mainGrid
     , languages
     , outputGrid
     , formatGrid
     ) where
 
-outputGrid :: [String] -> IO ()
-outputGrid = putStrLn (formatGrid grid)
+type Grid = [String]
 
-formatGrid :: [String] -> String
+outputGrid :: Grid -> IO ()
+outputGrid grid = putStrLn (formatGrid grid)
+
+formatGrid :: Grid -> String
 formatGrid = unlines
 
-grid = [ "__c________R___" 
+mainGrid = [ "__c________R___" 
         ,"__SI________U__"
         ,"__HASKELL____B_"
         ,"__A___________Y"
@@ -22,8 +24,7 @@ grid = [ "__c________R___"
         ,"____L____T_____"
         ,"_________H_____"
         ,"_________O_____"
-        ,"_________N_____"
-        ]
+        ,"_________N_____"]
 
 languages = ["CHASRP"
             , "RUBY"
@@ -31,5 +32,4 @@ languages = ["CHASRP"
             , "COBOL"
             , "PYTHON"
             , "PERL"
-            , "PHP"
-            ]
+            , "PHP"]
