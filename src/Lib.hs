@@ -1,6 +1,7 @@
 module Lib
     ( outputGrid
     , formatGrid
+    , findWord
     , findWords
     , getGridLines
     , skewGrid
