@@ -1,6 +1,7 @@
 module Main where
 
 import Lib
+import Data
 
 main :: IO ()
-main = outputGrid $ findWords mainGrid languages
+main = outputGrid $ findWords grid languages
