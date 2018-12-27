@@ -5,6 +5,7 @@ module Lib
     , formatGrid
     , findWords
     , getGridLines
+    , skewGrid
     ) where
 
 import Data.List(isInfixOf, transpose)
@@ -18,10 +19,22 @@ outputGrid grid = putStrLn (formatGrid grid)
 formatGrid :: Grid -> String
 formatGrid = unlines
 
+skewGrid :: Grid -> Grid
+skewGrid [] = []
+skewGrid (l:ls) = l : skewGrid (map indent ls)
+        where indent line = '_' : line
+
 getGridLines :: Grid -> [String]
 getGridLines grid = 
-    let lines = grid ++ (transpose grid)
-    in lines ++ (map reverse lines)
+    let horizontal = grid
+        vertical = transpose grid
+        diagonal1 = diagonalize grid
+        diagonal2 = diagonalize (map reverse grid)
+        lines = horizontal ++ vertical ++ diagonal1 ++ diagonal2
+        in lines ++ (map reverse lines)
+        
+diagonalize :: Grid -> Grid
+diagonalize = transpose . skewGrid
 
 findWord :: Grid -> String -> Maybe String
 findWord grid word =
