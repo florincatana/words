@@ -4,9 +4,10 @@ module Lib
     , outputGrid
     , formatGrid
     , findWords
+    , getGridLines
     ) where
 
-import Data.List(isInfixOf)
+import Data.List(isInfixOf, transpose)
 import Data.Maybe(catMaybes)
 
 type Grid = [String]
@@ -17,9 +18,14 @@ outputGrid grid = putStrLn (formatGrid grid)
 formatGrid :: Grid -> String
 formatGrid = unlines
 
+getGridLines :: Grid -> [String]
+getGridLines grid = 
+    let lines = grid ++ (transpose grid)
+    in lines ++ (map reverse lines)
+
 findWord :: Grid -> String -> Maybe String
 findWord grid word =
-    let lines = grid ++ (map reverse grid)
+    let lines = getGridLines grid
         found = or $ map (findWordInLine word) lines
     in if found then Just word else Nothing
 
@@ -31,23 +37,28 @@ findWords grid words =
 findWordInLine :: String -> String -> Bool
 findWordInLine = isInfixOf
 
-mainGrid = [ "__c________R___" 
-        ,"__SI________U__"
-        ,"__HASKELL____B_"
-        ,"__A___________Y"
-        ,"__R____________"
-        ,"__PHP__________"
-        ,"____S_LREP_____"
-        ,"____I____Y_____"
-        ,"____L____T_____"
-        ,"_________H_____"
-        ,"_________O_____"
-        ,"_________N_____"]
+mainGrid = [ "__C________R___" 
+            ,"__SI________U__"
+            ,"__HASKELL____B_"
+            ,"__A__A_____S__Y"
+            ,"__R___B___C____"
+            ,"__PHP____H_____"
+            ,"____S_LREP_____"
+            ,"____I__M_Y__L__"
+            ,"____L_E__T_O___"
+            ,"_________HB____"
+            ,"_________O_____"
+            ,"________CN_____"
+            ]
 
-languages = ["CHASRP"
-            , "RUBY"
-            , "HASKELL"
+languages = [ "BASIC"
             , "COBOL"
-            , "PYTHON"
+            , "CSHARP"
+            , "HASKELL"
+            , "LISP"
             , "PERL"
-            , "PHP"]
+            , "PHP"
+            , "PYTHON"
+            , "RUBY"
+            , "SCHEME"
+            ]
