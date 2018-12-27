@@ -3,4 +3,4 @@ module Main where
 import Lib
 
 main :: IO ()
-main = outputGrid mainGrid
+main = outputGrid $ findWords mainGrid languages
