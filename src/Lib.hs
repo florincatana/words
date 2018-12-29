@@ -17,6 +17,7 @@ module Lib
     , score
     , playGame
     , formatGame
+    , completed
     ) where
 
 import Data.List(isInfixOf, transpose)
@@ -47,7 +48,11 @@ totalWords grid = length . M.keys $ gameWords grid
 score :: Game -> Int
 score grid = length . catMaybes . M.elems $ gameWords grid
 
+completed :: Game -> Bool
+completed game = score game == totalWords game
+
 playGame :: Game -> String -> Game
+playGame game word | not $ M.member word (gameWords game) = game
 playGame game word = 
     let grid = gameGrid game
         foundWord = findWord grid word
@@ -62,7 +67,7 @@ formatGame :: Game -> String
 formatGame game =
     let grid = gameGrid game
     in formatGrid grid
-    ++ "\n\n"
+    ++ "\n\nScore: "
     ++ (show $ score game)
     ++ "/"
     ++ (show $ totalWords game)
