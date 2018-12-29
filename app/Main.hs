@@ -17,18 +17,25 @@ main = do
 
 playTurn game = do
     colorDisplay . formatGame $ game
-    if completed game then
-        putStrLn "Congratulation! You have completed the Game!"
-    else
-        putStr "Please enter a word> "
-    word <- getLine
-    let newGame = playGame game word
-    playTurn newGame
+    if completed game 
+        then do
+            setSGR [SetColor Foreground Vivid Green]
+            putStrLn "Congratulation! You have completed the Game!"
+            setSGR []
+            putStr ""
+        else do
+            setSGR [SetColor Foreground Vivid Blue]
+            putStr "Please enter a word> "
+            setSGR []
+            putStr ""
+            word <- getLine
+            let newGame = playGame game word
+            playTurn newGame
 
 colorDisplay [] = putStr "\n\n"
 colorDisplay out = do
     let char = head out
-    if isUpper char then setSGR [SetColor Foreground Vivid Red] else setSGR []
+    if isUpper char then setSGR [SetColor Foreground Vivid Green] else setSGR []
     putStr $ char : []
     setSGR []
     putStr ""
