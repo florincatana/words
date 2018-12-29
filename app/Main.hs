@@ -28,7 +28,7 @@ playTurn game = do
 colorDisplay [] = putStr "\n\n"
 colorDisplay out = do
     let char = head out
-    if isUpper char then setSGR [SetColor Foreground Vivid Red]
+    if isUpper char then setSGR [SetColor Foreground Vivid Red] else setSGR []
     putStr $ char : []
     setSGR []
     putStr ""
