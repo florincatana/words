@@ -11,15 +11,61 @@ module Lib
     , findWordInLine
     , findWordInCellLinePrefix
     , cell2char
+    , Game (gameGrid, gameWords)
+    , makeGame
+    , totalWords
+    , score
+    , playGame
+    , formatGame
     ) where
 
 import Data.List(isInfixOf, transpose)
 import Data.Maybe(catMaybes, listToMaybe)
+import qualified Data.Map as M
 
 data Cell = Cell (Integer, Integer) Char 
             | Indent
             deriving (Eq, Ord, Show)
 type Grid a = [[a]]
+
+data Game = Game {
+    gameGrid :: Grid Cell,
+    gameWords :: M.Map String (Maybe [Cell])
+}   deriving Show
+
+makeGame :: Grid Char -> [String] -> Game
+makeGame grid words = 
+    let gwc = gridWithCoords grid
+        tuplify word = (word, Nothing)
+        list = map tuplify words
+        dict = M.fromList list
+    in Game gwc dict
+
+totalWords :: Game -> Int
+totalWords grid = length . M.keys $ gameWords grid
+
+score :: Game -> Int
+score grid = length . catMaybes . M.elems $ gameWords grid
+
+playGame :: Game -> String -> Game
+playGame game word = 
+    let grid = gameGrid game
+        foundWord = findWord grid word
+    in case foundWord of
+        Nothing -> game
+        Just cs -> 
+            let dict = gameWords game
+                newDict = M.insert word foundWord dict
+            in game { gameWords = newDict }
+
+formatGame :: Game -> String
+formatGame game =
+    let grid = gameGrid game
+    in formatGrid grid
+    ++ "\n\n"
+    ++ (show $ score game)
+    ++ "/"
+    ++ (show $ totalWords game)
 
 zipOverGrid :: Grid a -> Grid b -> Grid (a,b)
 zipOverGrid = zipWith zip

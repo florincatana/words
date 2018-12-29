@@ -5,5 +5,5 @@ import Data
 
 main :: IO ()
 main = 
-    let gwc = gridWithCoords grid
-    in outputGrid gwc
+    let game = makeGame grid languages
+    in putStrLn . formatGame $ game
